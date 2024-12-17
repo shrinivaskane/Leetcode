@@ -21,5 +21,21 @@ public class LC242ValidAnagram {
             }
         }
         return true;
+
+        /* Follow up: If the string contain unicode chars
+        HashMap<Character, Integer> count = new HashMap<>();
+        for (int i = 0; i < s.length(); i++) {
+            char charS = s.charAt(i);
+            char charT = t.charAt(i);
+            count.put(charS, count.getOrDefault(charS, 0) + 1);
+            count.put(charT, count.getOrDefault(charT, 0) - 1);
+        }
+
+        for (int value : count.values()) {
+            if (value != 0) {
+                return false;
+            }
+        }
+        */
     }
 }
