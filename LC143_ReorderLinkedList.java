@@ -8,7 +8,7 @@
  *     ListNode(int val, ListNode next) { this.val = val; this.next = next; }
  * }
  */
-class Solution {
+class LC143_ReorderLinkedList {
     public void reorderList(ListNode head) {
         /* Brute force  Approach 
          if (head == null) {
