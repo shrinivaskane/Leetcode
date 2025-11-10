@@ -1,0 +1,31 @@
+class NC_NoOfConnectedComponentsUndirectedGraph {
+    public int countComponents(int n, int[][] edges) {
+        List<List<Integer>> adj = new ArrayList<>();
+        Set<Integer> visited = new HashSet<>();
+        int connectedComponents = 0;
+        for(int i = 0; i< n; i++) {
+            adj.add(new ArrayList<>());
+        }
+        for(int[] edge: edges) {
+            adj.get(edge[0]).add(edge[1]);
+            adj.get(edge[1]).add(edge[0]);
+        }
+        for(int i = 0; i< n; i++) {
+            if(!visited.contains(i)) {
+                connectedComponents++;
+                dfs(i, adj, visited);
+            }
+        }
+        return connectedComponents;
+    }
+
+    private void dfs(int node, List<List<Integer>> adj, Set<Integer> visited) {
+        if(visited.contains(node)) return;
+        visited.add(node);
+
+        for(int next: adj.get(node)) {
+            dfs(next, adj, visited);
+        }
+        return;
+    }
+}
