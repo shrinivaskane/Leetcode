@@ -1,41 +1,110 @@
-public class LC242ValidAnagram {
+class LC242ValidAnagram {
     public boolean isAnagram(String s, String t) {
-        /* Brute Force  Optimal TC O(nlogn + mlogm) SC O(1)
-        char[] sArray = s.toCharArray();
-        char[] tArray = t.toCharArray();
-        Arrays.sort(sArray);
-        Arrays.sort(tArray);
-        return Arrays.equals(sArray, tArray);
+        /* Using Sorting Approach  TC O(nlogn)  SC O(n)
+        if(s.length != t.length()) return false;
+
+        char[] sCharArray = s.toCharArray();
+        char[] tCharArray = t.toCharArray();
+
+        Arrays.sort(sCharArray);
+        Arrays.sort(tCharArray);
+
+        return Arrays.equals(sCharArray, tCharArray);
         */
 
-        // Optimal TC O(n+m) SC O(1)
+        // Using frequency counter  TC - O(n)   SC  O(1)
         if(s.length() != t.length()) return false;
-        int[] count = new int[26];
+
+        int[] counter = new int[26];
+
         for(int i = 0; i< s.length(); i++) {
-            count[s.charAt(i) - 'a']++;
-             count[t.charAt(i) - 'a']--;
+            counter[s.charAt(i) - 'a']++;
         }
-        for(int c: count) {
-            if(c!=0) {
+        for(int i = 0; i< t.length(); i++) {
+            counter[t.charAt(i) - 'a']--;
+            if(counter[t.charAt(i) - 'a'] < 0) {
                 return false;
             }
         }
         return true;
 
-        /* Follow up: If the string contain unicode chars
-        HashMap<Character, Integer> count = new HashMap<>();
+        /* If asked for Lowercase + Uppercase chars  TC  - O(n),  SC - O(1).
+         // If lengths differ, cannot be anagram
+        if (s.length() != t.length()) return false;
+
+        // 26 lowercase + 26 uppercase
+        int[] counter = new int[52];
+
         for (int i = 0; i < s.length(); i++) {
-            char charS = s.charAt(i);
-            char charT = t.charAt(i);
-            count.put(charS, count.getOrDefault(charS, 0) + 1);
-            count.put(charT, count.getOrDefault(charT, 0) - 1);
+            counter[getIndex(s.charAt(i))]++;
         }
 
-        for (int value : count.values()) {
-            if (value != 0) {
+        for (int i = 0; i < t.length(); i++) {
+            int idx = getIndex(t.charAt(i));
+            counter[idx]--;
+
+            if (counter[idx] < 0) {
                 return false;
             }
         }
-        */
+
+        return true;
     }
+
+    private int getIndex(char c) {
+        if (c >= 'a' && c <= 'z') {
+            return c - 'a';
+        }
+        return c - 'A' + 26;
+    }
+
+    */
+
+    /* If input strings contains unicode chars. TC   - O(n)   SC - O(k).
+    if (s.length() != t.length()) return false;
+
+        Map<Character, Integer> map = new HashMap<>();
+
+        for (char c : s.toCharArray()) {
+            map.put(c, map.getOrDefault(c, 0) + 1);
+        }
+
+        for (char c : t.toCharArray()) {
+            if (!map.containsKey(c)) return false;
+
+            map.put(c, map.get(c) - 1);
+
+            if (map.get(c) == 0) {
+                map.remove(c);
+            }
+        }
+
+        return map.isEmpty();
+        */ 
+
+        /* If input strings contains fully unicode chars 
+        Some Unicode characters (like emojis 😄) are represented using 2 chars (surrogate pairs)
+        
+        // for (char c : s.toCharArray())  may break for full Unicode correctness.
+
+        int[] sArr = s.codePoints().toArray();
+        int[] tArr = t.codePoints().toArray();
+
+        if (sArr.length != tArr.length) return false;
+
+        Map<Integer, Integer> map = new HashMap<>();
+
+        for (int c : sArr) {
+            map.put(c, map.getOrDefault(c, 0) + 1);
+        }
+
+        for (int c : tArr) {
+            if (!map.containsKey(c)) return false;
+
+            map.put(c, map.get(c) - 1);
+            if (map.get(c) == 0) map.remove(c);
+        }
+
+        return map.isEmpty();
+        */ 
 }
