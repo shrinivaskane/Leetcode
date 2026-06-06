@@ -27,20 +27,27 @@ public class LC128LongestConsequtiveSequence {
 
 
         /* Using set approach TC - O(n) SC 0(n) */
+        if(nums.length == 0) return 0;
+
         Set<Integer> set = new HashSet<>();
+        int maxLength = 0;
+
         for(int num: nums) {
             set.add(num);
         }
-        int maxLength = 0;
         for(int num: set) {
-            if(!set.contains(num - 1)) {
-                int length = 1;
-                while(set.contains(num + length)) {
-                    length++;
+            if(!set.contains(num-1)) {
+                int start = num;
+                int count = 0;
+                while(set.contains(start)) {
+                    count+=1;
+                    start+=1;
                 }
-                maxLength = Math.max(length, maxLength);
+                maxLength = Math.max(maxLength, count);
             }
         }
         return maxLength;
     }
 }
+
+
